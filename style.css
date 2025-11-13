@@ -148,14 +148,9 @@ main{
 }
 .checkbox-container{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px ;
-  overflow: hidden;
+  gap: 6px;
 }
-.checkbox{
-  border-radius: 100px ;
-}
+
 
 .checkbox:checked + .task-text{
   text-decoration: line-through;
@@ -183,4 +178,27 @@ main{
   font-size: 14px;
   font-weight: 400;
 }
+.task-buttons-container{
+  width: 50%;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-around;
+}
 
+.completed-item{
+  color: gray;
+}
+
+.filters > div.active {
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+.clear-completed{
+  background-color: #FEF2F2;
+  color: #EF4444;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  /* width: 50%; */
+}

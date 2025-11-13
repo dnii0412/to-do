@@ -23,35 +23,29 @@
       <!-- input fields -->
       <section class="input-field">
         
-        <input class="text-input" type="text" placeholder="Add a new task">
-        <input class="add-btn" type="button" value="add"> 
+        <input class="text-input" id="input" type="text" placeholder="Add a new task">
+        <input class="add-btn" id="addBtn" type="button" onclick="addTask()" value="add"> 
 
       </section>
 
       <!-- filter buttons -->
       <section class="filters">
-
         <div class="all">
           <p>All</p>
         </div>
-
         <div class="active">
           <p>Active</p>
         </div>
-
         <div class="completed">
           <p>Completed</p>
         </div>
-
       </section>
 
-      <section class="tasks">
-
-        <div class="no-tasks">
-          <p>No tasks yet. Add one above!</p>
-        </div>
-
+      <section id="task-container" class="tasks">
       </section>
+
+      <div class="task-counter">0 / 0 completed</div>
+      <button class="clear-completed">Clear Completed</button>
       </aside>
 
     </div>
