@@ -1,20 +1,20 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-body{
-  background-color: #F3F4F6;
+body {
+  background-color: #f3f4f6;
   font-family: "Montserrat", sans-serif;
 }
-main{
+main {
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
-.container{ 
+.container {
   margin-top: 60px;
   width: 400px;
   height: auto;
@@ -24,10 +24,10 @@ main{
   align-items: center;
   border-radius: 8px;
   box-shadow: #00000029;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 32px;
 }
-.inner{
+.inner {
   width: 100%;
   /* height: 40vh; */
   gap: 24px;
@@ -35,7 +35,7 @@ main{
   flex-direction: column;
   justify-content: center;
 }
-.headline{
+.headline {
   font-size: 20px;
   font-weight: 600;
   width: 100%;
@@ -43,34 +43,34 @@ main{
   display: flex;
   justify-content: center;
 }
-.headline>p{
+.headline > p {
   color: #000;
 }
-.input-field{
+.input-field {
   width: 90%;
   height: auto;
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.text-input{
+.text-input {
   width: 280px;
   height: 40px;
   padding-left: 16px;
   border-radius: 6px;
-  border: 1px solid #E4E4E7;
+  border: 1px solid #e4e4e7;
 }
-.add-btn{
+.add-btn {
   width: 60px;
   height: 40px;
-  background-color: #3C82F6;
+  background-color: #3c82f6;
   border: none;
   border-radius: 6px;
-  color: #F9F9F9;
+  color: #f9f9f9;
   font-size: 14px;
   font-weight: 400;
 }
-.filters{
+.filters {
   width: 90%;
   height: 32px;
   display: flex;
@@ -78,67 +78,58 @@ main{
   align-items: center;
   gap: 6px;
 }
-.all{
-  width: 38px;
+
+.all-text{
+  transition: 0.2s ease-in-out;
+  width: 60px;
   height: 32px;
-  display: flex;  
-  justify-content: center;
-  align-items: center;
-  background-color: #3C82F6;
-  border-radius: 6px;
- cursor: pointer;
-}
-.all>p{
-  font-size: 12px;
-  font-weight: 400;
-  color: white;
-}
-
-.active{
-  width: auto;
-  height: 100%;
-  padding: 10px;
   background-color: #F3F4F6;
+  border-radius: 6px;
+
+}
+.active-text{
+  transition: 0.2s ease-in-out;
+  width: 60px;
+  height: 32px;
+  background-color: #F3F4F6;
+  border-radius: 6px;
+
+}
+.completed-text{
+  transition: 0.2s ease-in-out;
+  width: 87px;
+  height: 32px;
+  background-color: #F3F4F6;
+  border-radius: 6px;
+  text-align: center;
+  text-justify: center
+  ;
+}
+.selected {
+  background-color: #3c82f6;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 6px;
- cursor: pointer;
 }
-
-.completed{
-  width: auto;
-  height: 100%;
-  background-color: #F3F4F6;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
- cursor: pointer;
-}
-.active>p, .completed>p{
-  font-size: 14px;
-  font-weight: 400;
-  color: black;
-}
-.tasks{
+.tasks {
   width: 90%;
+  transition: 0.6s linear;
 }
-.no-tasks{
+.no-tasks {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #6B7280;
+  color: #6b7280;
+  margin-top: 12px;
 }
 
-.task-item{
+.task-item {
   width: 100%;
   height: 62px;
   display: flex;
   gap: 6px;
   margin-top: 6px;
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   color: black;
   display: flex;
   justify-content: space-between;
@@ -146,27 +137,26 @@ main{
   align-items: center;
   border-radius: 8px;
 }
-.checkbox-container{
+.checkbox-container {
   display: flex;
   gap: 6px;
 }
 
-
-.checkbox:checked + .task-text{
+.checkbox:checked + .task-text {
   text-decoration: line-through;
 }
 
-.delete-btn{
+.delete-btn {
   width: 64px;
   height: 32px;
-  background-color: #FEF2F2;
-  color: #EF4444;
+  background-color: #fef2f2;
+  color: #ef4444;
   font-size: 14px;
   font-weight: 400;
   border: none;
   border-radius: 6px;
 }
-.edit-btn{
+.edit-btn {
   width: 48px;
   height: 32px;
   background-color: #f0f0f0;
@@ -174,31 +164,17 @@ main{
   border-radius: 6px;
 }
 
-.task-text{
+.task-text {
   font-size: 14px;
   font-weight: 400;
 }
-.task-buttons-container{
+.task-buttons-container {
   width: 50%;
   display: flex;
   /* flex-direction: column; */
   justify-content: space-around;
 }
 
-.completed-item{
+.completed-item {
   color: gray;
-}
-
-.filters > div.active {
-  background: #007bff;
-  color: white;
-  border-radius: 4px;
-}
-.clear-completed{
-  background-color: #FEF2F2;
-  color: #EF4444;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  /* width: 50%; */
 }

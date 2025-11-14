@@ -1,21 +1,26 @@
 const input = document.querySelector(".text-input");
 const addBtn = document.querySelector(".add-btn");
 const tasksContainer = document.querySelector(".tasks");
-const allFilter = document.querySelector(".all");
-const activeFilter = document.querySelector(".active");
-const completedFilter = document.querySelector(".completed");
-const taskCounter = document.querySelector(".task-counter");
-const clearBtn = document.querySelector(".clear-completed"); // NEW
+
+// filter buttons
+const allFilter = document.querySelector(".all-text");
+const activeFilter = document.querySelector(".active-text");
+const completedFilter = document.querySelector(".completed-text");
 
 let tasks = [];
-let currentFilter = "all";
+let currentFilterType = "all";
 
-// === Add Task ===
+// EVENT LISTENERS
 addBtn.addEventListener("click", addTask);
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
 });
 
+allFilter.addEventListener("click", () => changeFilter("all"));
+activeFilter.addEventListener("click", () => changeFilter("active"));
+completedFilter.addEventListener("click", () => changeFilter("completed"));
+
+// ADD TASK
 function addTask() {
   const text = input.value.trim();
   if (!text) return;
@@ -25,34 +30,64 @@ function addTask() {
     text,
     isCompleted: false,
   });
+
   input.value = "";
   renderTasks();
-  updateCounter();
 }
 
-// === Render Tasks ===
+// CHANGE FILTER
+function changeFilter(type) {
+  currentFilterType = type;
+  highlightFilter(type);
+  renderTasks();
+}
+
+// FILTER HIGHLIGHT
+function highlightFilter(type) {
+  allFilter.classList.remove("selected");
+  activeFilter.classList.remove("selected");
+  completedFilter.classList.remove("selected");
+
+  if (type === "all") allFilter.classList.add("selected");
+  if (type === "active") activeFilter.classList.add("selected");
+  if (type === "completed") completedFilter.classList.add("selected");
+}
+
+// RENDER TASKS
 function renderTasks() {
+  let filteredTasks = tasks;
+
+  if (currentFilterType === "active") {
+    filteredTasks = tasks.filter((t) => !t.isCompleted);
+  }
+
+  if (currentFilterType === "completed") {
+    filteredTasks = tasks.filter((t) => t.isCompleted);
+  }
+
   tasksContainer.innerHTML = "";
-  if (tasks.length === 0) {
+
+  if (filteredTasks.length === 0) {
     tasksContainer.innerHTML =
-      '<div class="no-tasks"><p>No tasks yet. Add one above!</p></div>';
+      '<div class="no-tasks"><p>No tasks found.</p></div>';
     return;
   }
 
-  const filteredTasks = getFilteredTasks();
   filteredTasks.forEach((task) => {
     tasksContainer.innerHTML += `
       <div class="task-item" data-id="${task.id}">
         <div class="checkbox-container">
           <input 
             class="checkbox" 
-            type="checkbox" 
+            type="checkbox"
             ${task.isCompleted ? "checked" : ""}
-            onchange="markAsDone(${task.id}, this)">
-          <p class="task-text ${task.isCompleted ? "completed-item" : ""}">${
-      task.text
-    }</p>
+            onchange="markAsDone(${task.id}, this)"
+          >
+          <p class="task-text ${task.isCompleted ? "completed-item" : ""}">
+            ${task.text}
+          </p>
         </div>
+
         <div class="task-buttons-container">
           <button class="delete-btn" onclick="deleteTask(${
             task.id
@@ -64,78 +99,21 @@ function renderTasks() {
   });
 }
 
-// === Get Filtered Tasks ===
-function getFilteredTasks() {
-  if (currentFilter === "active") return tasks.filter((t) => !t.isCompleted);
-  if (currentFilter === "completed") return tasks.filter((t) => t.isCompleted);
-  return tasks;
-}
-
-// === Delete Task ===
+// DELETE TASK
 function deleteTask(taskId) {
   if (confirm("Press 'OK' to delete this task.")) {
     tasks = tasks.filter((t) => t.id !== taskId);
     renderTasks();
-    updateCounter();
   }
 }
 
-// === Mark as Done ===
+// MARK AS DONE
 function markAsDone(taskId, checkbox) {
   const task = tasks.find((t) => t.id === taskId);
   task.isCompleted = checkbox.checked;
-
-  const text = checkbox.nextElementSibling;
-  text.classList.toggle("completed-item", checkbox.checked);
-
-  updateCounter();
+  renderTasks();
 }
 
-// === Update Counter ===
-function updateCounter() {
-  const completed = tasks.filter((t) => t.isCompleted).length;
-  const total = tasks.length;
-  taskCounter.textContent = `${completed} / ${total} completed`;
-}
-
-// === Filter Buttons ===
-allFilter.addEventListener("click", () => {
-  currentFilter = "all";
-  renderTasks();
-  updateCounter();
-  setActiveFilter(allFilter);
-});
-
-activeFilter.addEventListener("click", () => {
-  currentFilter = "active";
-  renderTasks();
-  updateCounter();
-  setActiveFilter(activeFilter);
-});
-
-completedFilter.addEventListener("click", () => {
-  currentFilter = "completed";
-  renderTasks();
-  updateCounter();
-  setActiveFilter(completedFilter);
-});
-
-// === Highlight Active Filter ===
-function setActiveFilter(activeBtn) {
-  [allFilter, activeFilter, completedFilter].forEach((btn) =>
-    btn.classList.remove("active")
-  );
-  activeBtn.classList.add("active");
-}
-
-// === Clear Completed ===
-clearBtn.addEventListener("click", () => {
-  tasks = tasks.filter((t) => !t.isCompleted);
-  renderTasks();
-  updateCounter();
-});
-
-// === Initial Render ===
+// INITIAL
+highlightFilter("all");
 renderTasks();
-updateCounter();
-setActiveFilter(allFilter);
