@@ -151,6 +151,7 @@ main {
   padding: 16px;
   align-items: center;
   border-radius: 8px;
+
 }
 .checkbox-container {
   display: flex;
@@ -187,23 +188,26 @@ main {
   width: 50%;
   display: flex;
   /* flex-direction: column; */
-  justify-content: space-around;
+  justify-content: end;
 }
 
 .completed-item {
   color: gray;
 }
-
-.counter-container {
+.counter-container{
   width: 90%;
-  height: 36px;
+  height: 32px;
+  display: flex;
+  justify-self: unset;
+}
+.inner-counter {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .task-counter {
   color: #6B7280;
-  display: none;
 }
 .clear-completed{
   color: #EF4444;
@@ -215,5 +219,4 @@ main {
   justify-content: end;
   align-items: center;
   cursor: pointer;
-  display: none;
 }

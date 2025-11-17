@@ -2,6 +2,7 @@ const input = document.querySelector(".text-input");
 const addBtn = document.querySelector(".add-btn");
 const tasksContainer = document.querySelector(".tasks");
 
+// filter buttons
 const allFilter = document.querySelector(".all-text");
 const activeFilter = document.querySelector(".active-text");
 const completedFilter = document.querySelector(".completed-text");
@@ -10,9 +11,11 @@ const counterContainer = document.querySelector(".counter-container");
 const taskCounter = document.querySelector(".task-counter");
 const clearCompleted = document.querySelector(".clear-completed");
 
+/* ------------------- STATE ------------------- */
 let tasks = [];
-let currentFilter = "all";
+let currentFilterType = "all";
 
+/* ------------------- EVENTS ------------------- */
 addBtn.addEventListener("click", addTask);
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
@@ -24,56 +27,94 @@ completedFilter.addEventListener("click", () => changeFilter("completed"));
 
 clearCompleted.addEventListener("click", deleteCompletedItems);
 
+/* ------------------- ADD TASK ------------------- */
 function addTask() {
-  const txt = input.value.trim();
-  if (!txt) return;
+  const text = input.value.trim();
+  if (!text) return;
 
-  tasks.push({ id: Date.now(), text: txt, isCompleted: false });
+  tasks.push({
+    id: Date.now(),
+    text,
+    isCompleted: false,
+  });
+
   input.value = "";
-  render();
+  renderTasks();
 }
 
+/* ------------------- FILTER ------------------- */
 function changeFilter(type) {
-  currentFilter = type;
+  currentFilterType = type;
   highlightFilter(type);
-  render();
+  renderTasks();
 }
 
+// FILTER HIGHLIGHT
 function highlightFilter(type) {
-  [allFilter, activeFilter, completedFilter].forEach((el) =>
-    el.classList.remove("selected")
-  );
-  document.querySelector(`.${type}-text`).classList.add("selected");
+  allFilter.classList.remove("selected");
+  activeFilter.classList.remove("selected");
+  completedFilter.classList.remove("selected");
+
+  if (type === "all") allFilter.classList.add("selected");
+  if (type === "active") activeFilter.classList.add("selected");
+  if (type === "completed") completedFilter.classList.add("selected");
 }
 
+/* ------------------- RENDER ------------------- */
 function render() {
   let list = tasks;
 
-  if (currentFilter === "active") list = tasks.filter((t) => !t.isCompleted);
-  if (currentFilter === "completed") list = tasks.filter((t) => t.isCompleted);
+  if (currentFilterType === "active") {
+    filteredTasks = tasks.filter((t) => !t.isCompleted);
+  }
+
+  if (currentFilterType === "completed") {
+    filteredTasks = tasks.filter((t) => t.isCompleted);
+  }
+
+  // all tasks
+  allTasksCount = tasks.length;
+  console.log("all tasks: " + allTasksCount);
+
+  // active tasks counter
+  const ActiveTasksCount = tasks.filter((t) => !t.isCompleted).length;
+  taskCounterText.textContent =
+    ActiveTasksCount === 1
+      ? `${ActiveTasksCount} task left`
+      : `${ActiveTasksCount} tasks left`;
+  console.log("active tasks counter:" + ActiveTasksCount);
+
+  // completed tasks counter
+  const completedTasksCount = tasks.filter((t) => t.isCompleted).length;
+  console.log("completed tasks: " + completedTasksCount);
 
   tasksContainer.innerHTML = "";
 
-  if (list.length === 0) {
+  if (filteredTasks.length === 0) {
+    taskCounter.style.display = "none";
     tasksContainer.innerHTML =
       '<div class="no-tasks"><p>No tasks found.</p></div>';
-  } else {
-    list.forEach((t) => {
-      const div = document.createElement("div");
-      div.className = "task-item";
-      div.dataset.id = t.id;
+    return;
+  }
 
-      div.innerHTML = `
+  filteredTasks.forEach((task) => {
+    taskCounterText.innerHTML = `
+      <p> ${allTasksCount} of ${completedTasksCount} </p>
+    `;
+    tasksContainer.innerHTML += `
+      <div class="task-item" data-id="${task.id}">
         <div class="checkbox-container">
-          <input class="checkbox" type="checkbox" ${
-            t.isCompleted ? "checked" : ""
-          }
-                 onchange="toggle(${t.id})">
-          <p class="task-text ${t.isCompleted ? "completed-item" : ""}"
-             ondblclick="edit(${t.id})">
-            ${escape(t.text)}
+          <input
+            class="checkbox"
+            type="checkbox"
+            ${task.isCompleted ? "checked" : ""}
+            onchange="markAsDone(${task.id}, this)"
+          >
+          <p class="task-text ${task.isCompleted ? "completed-item" : ""}">
+            ${task.text}
           </p>
         </div>
+
         <div class="task-buttons-container">
           <button class="edit-btn"   onclick="edit(${t.id})">Edit</button>
           <button class="delete-btn" onclick="del(${t.id})">Delete</button>
@@ -86,6 +127,7 @@ function render() {
   updateFooter();
 }
 
+/* ------------------- TOGGLE ------------------- */
 function toggle(id) {
   const t = tasks.find((x) => x.id === id);
   if (t) {
@@ -94,6 +136,7 @@ function toggle(id) {
   }
 }
 
+/* ------------------- DELETE ONE ------------------- */
 function del(id) {
   if (confirm("Delete this task?")) {
     tasks = tasks.filter((t) => t.id !== id);
@@ -101,6 +144,7 @@ function del(id) {
   }
 }
 
+/* ------------------- EDIT ------------------- */
 function edit(id) {
   const task = tasks.find((t) => t.id === id);
   if (!task || task.isCompleted) return;
@@ -134,15 +178,15 @@ function edit(id) {
   inp.select();
 }
 
+/* ------------------- CLEAR COMPLETED ------------------- */
 function deleteCompletedItems() {
-  const cnt = tasks.filter((t) => t.isCompleted).length;
-  if (!cnt) return;
-  if (confirm(`Delete ${cnt} completed task(s)?`)) {
+  if (confirm("Press 'OK' to delete all completed tasks.")) {
     tasks = tasks.filter((t) => !t.isCompleted);
     render();
   }
 }
 
+/* ------------------- FOOTER (counter + button) ------------------- */
 function updateFooter() {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.isCompleted).length;
@@ -157,11 +201,15 @@ function updateFooter() {
   clearCompleted.style.display = completed ? "block" : "none";
 }
 
+/* ------------------- UTIL ------------------- */
 function escape(s) {
   const div = document.createElement("div");
   div.textContent = s;
   return div.innerHTML;
 }
 
+/* ------------------- INIT ------------------- */
 highlightFilter("all");
-render();
+renderTasks();
+
+// <button class="edit-btn">Edit</button>
