@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-do List</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <aside class="inner">
+          <!-- headline -->
+          <div class="headline">
+            <p>To-Do List</p>
+          </div>
 
-  <main>
-    <div class="container">
+          <!-- input fields -->
+          <section class="input-field">
+            <input
+              class="text-input"
+              id="input"
+              type="text"
+              placeholder="Add a new task"
+            />
+            <input
+              class="add-btn"
+              id="addBtn"
+              type="button"
+              onclick="addTask()"
+              value="add"
+            />
+          </section>
 
-      <aside class="inner">
-              <!-- headline -->
-      <div class="headline">
-        <p>To-Do List</p>
+          <!-- filter buttons -->
+          <section class="filters">
+            <p class="all-text">All</p>
+            <p class="active-text">Active</p>
+            <p class="completed-text">Completed</p>
+          </section>
+
+          <section id="task-container" class="tasks"></section>
+
+          <div class="counter-container">
+            <div class="task-counter">0 / 0 completed</div>
+            <button class="clear-completed" onclick="deleteCompletedItems()">Clear Completed</button>
+          </div>
+          
+        </aside>
       </div>
+    </main>
 
-      <!-- input fields -->
-      <section class="input-field">
-        
-        <input class="text-input" id="input" type="text" placeholder="Add a new task">
-        <input class="add-btn" id="addBtn" type="button" onclick="addTask()" value="add"> 
-
-      </section>
-
-      <!-- filter buttons -->
-      <section class="filters">
-          <p class="all-text">All</p>
-          <p class="active-text">Active</p>
-          <p class="completed-text">Completed</p>
-      </section>
-
-      <section id="task-container" class="tasks">
-      </section>
-<!-- 
-      <div class="task-counter">0 / 0 completed</div>
-      <button class="clear-completed">Clear Completed</button> -->
-      
-      </aside>
-
-    </div>
-  </main>
-
-  <script src="app.js"></script>
-
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>

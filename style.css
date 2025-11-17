@@ -34,6 +34,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 .headline {
   font-size: 20px;
@@ -69,6 +70,7 @@ main {
   color: #f9f9f9;
   font-size: 14px;
   font-weight: 400;
+  cursor: pointer;
 }
 .filters {
   width: 90%;
@@ -79,31 +81,44 @@ main {
   gap: 6px;
 }
 
-.all-text{
+.all-text {
   transition: 0.2s ease-in-out;
   width: 60px;
   height: 32px;
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   border-radius: 6px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
 }
-.active-text{
+.active-text {
   transition: 0.2s ease-in-out;
   width: 60px;
   height: 32px;
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
 
 }
-.completed-text{
+.completed-text {
   transition: 0.2s ease-in-out;
   width: 87px;
   height: 32px;
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   border-radius: 6px;
   text-align: center;
-  text-justify: center
-  ;
+  text-justify: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
 }
 .selected {
   background-color: #3c82f6;
@@ -177,4 +192,28 @@ main {
 
 .completed-item {
   color: gray;
+}
+
+.counter-container {
+  width: 90%;
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-counter {
+  color: #6B7280;
+  display: none;
+}
+.clear-completed{
+  color: #EF4444;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  cursor: pointer;
+  display: none;
 }
