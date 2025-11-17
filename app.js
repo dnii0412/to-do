@@ -7,15 +7,15 @@ const allFilter = document.querySelector(".all-text");
 const activeFilter = document.querySelector(".active-text");
 const completedFilter = document.querySelector(".completed-text");
 
-const counterContainer = document.querySelector(".counter-container");
-const taskCounter = document.querySelector(".task-counter");
-const clearCompleted = document.querySelector(".clear-completed");
+// task counter
+const taskCounter = document.querySelector(".counter-container");
+const taskCounterText = document.querySelector(".task-counter");
 
-/* ------------------- STATE ------------------- */
+// stores tasks in this array:
 let tasks = [];
 let currentFilterType = "all";
 
-/* ------------------- EVENTS ------------------- */
+// EVENT LISTENERS
 addBtn.addEventListener("click", addTask);
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
@@ -25,9 +25,7 @@ allFilter.addEventListener("click", () => changeFilter("all"));
 activeFilter.addEventListener("click", () => changeFilter("active"));
 completedFilter.addEventListener("click", () => changeFilter("completed"));
 
-clearCompleted.addEventListener("click", deleteCompletedItems);
-
-/* ------------------- ADD TASK ------------------- */
+// ADD TASK
 function addTask() {
   const text = input.value.trim();
   if (!text) return;
@@ -42,7 +40,7 @@ function addTask() {
   renderTasks();
 }
 
-/* ------------------- FILTER ------------------- */
+// CHANGE FILTER
 function changeFilter(type) {
   currentFilterType = type;
   highlightFilter(type);
@@ -60,9 +58,9 @@ function highlightFilter(type) {
   if (type === "completed") completedFilter.classList.add("selected");
 }
 
-/* ------------------- RENDER ------------------- */
-function render() {
-  let list = tasks;
+// RENDER TASKS
+function renderTasks() {
+  let filteredTasks = tasks;
 
   if (currentFilterType === "active") {
     filteredTasks = tasks.filter((t) => !t.isCompleted);
@@ -116,99 +114,42 @@ function render() {
         </div>
 
         <div class="task-buttons-container">
-          <button class="edit-btn"   onclick="edit(${t.id})">Edit</button>
-          <button class="delete-btn" onclick="del(${t.id})">Delete</button>
+          <button class="delete-btn" onclick="deleteTask(${
+            task.id
+          })">Delete</button>
         </div>
-      `;
-      tasksContainer.appendChild(div);
-    });
-  }
-
-  updateFooter();
-}
-
-/* ------------------- TOGGLE ------------------- */
-function toggle(id) {
-  const t = tasks.find((x) => x.id === id);
-  if (t) {
-    t.isCompleted = !t.isCompleted;
-    render();
-  }
-}
-
-/* ------------------- DELETE ONE ------------------- */
-function del(id) {
-  if (confirm("Delete this task?")) {
-    tasks = tasks.filter((t) => t.id !== id);
-    render();
-  }
-}
-
-/* ------------------- EDIT ------------------- */
-function edit(id) {
-  const task = tasks.find((t) => t.id === id);
-  if (!task || task.isCompleted) return;
-
-  const item = document.querySelector(`.task-item[data-id="${id}"]`);
-  const p = item.querySelector(".task-text");
-
-  const inp = document.createElement("input");
-  inp.type = "text";
-  inp.value = task.text;
-  inp.className = "edit-input";
-
-  const finish = () => {
-    const txt = inp.value.trim();
-    if (!txt) {
-      del(id);
-      return;
-    }
-    task.text = txt;
-    render();
-  };
-
-  inp.addEventListener("blur", finish);
-  inp.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") finish();
-    if (e.key === "Escape") render();
+      </div>
+    `;
+    taskCounter.style.display = "block";
   });
-
-  p.replaceWith(inp);
-  inp.focus();
-  inp.select();
 }
 
-/* ------------------- CLEAR COMPLETED ------------------- */
+// DELETE TASK
+function deleteTask(taskId) {
+  if (confirm("Press 'OK' to delete this task.")) {
+    tasks = tasks.filter((t) => t.id !== taskId);
+    renderTasks();
+  }
+}
+
 function deleteCompletedItems() {
   if (confirm("Press 'OK' to delete all completed tasks.")) {
     tasks = tasks.filter((t) => !t.isCompleted);
-    render();
+    renderTasks();
+  } else if (!ActiveTasksCount === 0) {
+    console.log("No completed tasks to delete.");
+    alert("No completed tasks to delete.");
   }
 }
 
-/* ------------------- FOOTER (counter + button) ------------------- */
-function updateFooter() {
-  const total = tasks.length;
-  const completed = tasks.filter((t) => t.isCompleted).length;
-  const active = total - completed;
-
-  taskCounter.textContent = `${active} / ${total} completed`;
-
-  // show whole footer when there is at least one task
-  counterContainer.style.display = total ? "flex" : "none";
-
-  // show Clear button only when there are completed tasks
-  clearCompleted.style.display = completed ? "block" : "none";
+// MARK AS DONE
+function markAsDone(taskId, checkbox) {
+  const task = tasks.find((t) => t.id === taskId);
+  task.isCompleted = checkbox.checked;
+  renderTasks();
 }
 
-/* ------------------- UTIL ------------------- */
-function escape(s) {
-  const div = document.createElement("div");
-  div.textContent = s;
-  return div.innerHTML;
-}
-
-/* ------------------- INIT ------------------- */
+// INITIAL
 highlightFilter("all");
 renderTasks();
 
