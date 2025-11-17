@@ -154,3 +154,4 @@ highlightFilter("all");
 renderTasks();
 
 // <button class="edit-btn">Edit</button>
+// EDIT TASK
