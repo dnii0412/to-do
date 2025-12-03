@@ -2,20 +2,16 @@ const input = document.querySelector(".text-input");
 const addBtn = document.querySelector(".add-btn");
 const tasksContainer = document.querySelector(".tasks");
 
-// filter buttons
 const allFilter = document.querySelector(".all-text");
 const activeFilter = document.querySelector(".active-text");
 const completedFilter = document.querySelector(".completed-text");
 
-// task counter
 const taskCounter = document.querySelector(".counter-container");
 const taskCounterText = document.querySelector(".task-counter");
 
-// stores tasks in this array:
 let tasks = [];
 let currentFilterType = "all";
 
-// EVENT LISTENERS
 addBtn.addEventListener("click", addTask);
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
@@ -25,7 +21,6 @@ allFilter.addEventListener("click", () => changeFilter("all"));
 activeFilter.addEventListener("click", () => changeFilter("active"));
 completedFilter.addEventListener("click", () => changeFilter("completed"));
 
-// ADD TASK
 function addTask() {
   const text = input.value.trim();
   if (!text) return;
@@ -39,15 +34,12 @@ function addTask() {
   input.value = "";
   renderTasks();
 }
-
-// CHANGE FILTER
 function changeFilter(type) {
   currentFilterType = type;
   highlightFilter(type);
   renderTasks();
 }
 
-// FILTER HIGHLIGHT
 function highlightFilter(type) {
   allFilter.classList.remove("selected");
   activeFilter.classList.remove("selected");
@@ -73,7 +65,6 @@ function renderTasks() {
   allTasksCount = tasks.length;
   console.log("all tasks: " + allTasksCount);
 
-  // active tasks counter
   const ActiveTasksCount = tasks.filter((t) => !t.isCompleted).length;
   taskCounterText.textContent =
     ActiveTasksCount === 1
@@ -86,7 +77,7 @@ function renderTasks() {
   console.log("completed tasks: " + completedTasksCount);
 
   tasksContainer.innerHTML = "";
- 
+
   if (filteredTasks.length === 0) {
     taskCounter.style.display = "none";
     tasksContainer.innerHTML =
